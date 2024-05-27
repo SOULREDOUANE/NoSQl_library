@@ -1,0 +1,53 @@
+// Switch to the bibliotheque database (creates it if it doesn't exist)
+use bibliotheque
+
+// Create Books Collection
+db.createCollection("books")
+db.books.insertMany([
+    {
+        "isbn": "978-3-16-148410-0",
+        "title": "The Great Gatsby",
+        "author_id": ObjectId("60c72b2f5f1b2c001c8e4b75"),
+        "published_date": new Date("1925-04-10T00:00:00Z"),
+        "genre": "Fiction",
+        "copies_available": 5
+    }
+])
+
+// Create Members Collection
+db.createCollection("members")
+db.members.insertMany([
+    {
+        "member_id": "M12345",
+        "name": "John Doe",
+        "email": "john.doe@example.com",
+        "phone": "555-1234",
+        "address": "123 Main St, Anytown, USA",
+        "membership_date": new Date("2021-01-15T00:00:00Z")
+    }
+])
+
+// Create Loans Collection
+db.createCollection("loans")
+db.loans.insertMany([
+    {
+        "loan_id": "L98765",
+        "book_id": ObjectId("60c72b2f5f1b2c001c8e4b76"),
+        "member_id": ObjectId("60c72b2f5f1b2c001c8e4b77"),
+        "loan_date": new Date("2021-05-01T00:00:00Z"),
+        "due_date": new Date("2021-06-01T00:00:00Z"),
+        "return_date": null
+    }
+])
+
+// Create Users Collection
+db.createCollection("users")
+db.users.insertMany([
+    {
+        "user_id": "U23456",
+        "username": "admin",
+        "password_hash": "$2b$12$eImiTXuWVxfM37uY4JANjQ==",  // Hashed password
+        "email": "admin@example.com",
+        "role": "admin"
+    }
+])
