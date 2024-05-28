@@ -1,54 +1,22 @@
-from config import neo4j_driver
+from neo4j import GraphDatabase
 
 class Neo4jService:
-    def __init__(self):
-        self.driver = neo4j_driver
+    def __init__(self, uri, user, password):
+        self.uri = uri
+        self.user = user
+        self.password = password
+        self.driver = None
 
-    def create_author(self, author):
-        with self.driver.session() as session:
-            session.run(
-                "CREATE (a:Author {name: $name, birthdate: $birthdate})",
-                name=author.name, birthdate=author.birthdate
-            )
+    def connect(self):
+        self.driver = GraphDatabase.driver(self.uri, auth=(self.user, self.password))
+        print("Neo4j connection successful")
 
-    def get_author(self, name):
+    def create_initial_data(self, books):
         with self.driver.session() as session:
-            result = session.run(
-                "MATCH (a:Author {name: $name}) RETURN a",
-                name=name
-            )
-            return result.single()
+            session.run("CREATE CONSTRAINT FOR (b:Book) REQUIRE b.title IS UNIQUE")
+            session.run("CREATE CONSTRAINT FOR (a:Author) REQUIRE a.name IS UNIQUE")
 
-    def create_book(self, book, author_names):
-        with self.driver.session() as session:
-            session.run(
-                "CREATE (b:Book {title: $title, isbn: $isbn, publication_date: $publication_date})",
-                title=book.title, isbn=book.isbn, publication_date=book.publication_date
-            )
-            for author_name in author_names:
-                session.run(
-                    "MATCH (b:Book {title: $title}), (a:Author {name: $name}) CREATE (b)-[:WROTE]->(a)",
-                    title=book.title, name=author_name
-                )
-
-    def get_book(self, title):
-        with self.driver.session() as session:
-            result = session.run(
-                "MATCH (b:Book {title: $title}) RETURN b",
-                title=title
-            )
-            return result.single()
-
-    def update_book(self, title, updates):
-        with self.driver.session() as session:
-            session.run(
-                "MATCH (b:Book {title: $title}) SET b += $updates",
-                title=title, updates=updates
-            )
-
-    def delete_book(self, title):
-        with self.driver.session() as session:
-            session.run(
-                "MATCH (b:Book {title: $title}) DETACH DELETE b",
-                title=title
-            )
+            for book in books:
+                session.run("MERGE (b:Book {title: $title}) MERGE (a:Author {name: $author}) MERGE (a)-[:WROTE]->(b)",
+                            title=book.title, author=book.author)
+            print("Initial Neo4j data inserted")
