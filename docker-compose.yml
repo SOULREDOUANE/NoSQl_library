@@ -21,7 +21,7 @@ services:
       - app-network
 
   python-app:
-    build: ./python-app
+    build: .
     container_name: python-app
     depends_on:
       - mongodb

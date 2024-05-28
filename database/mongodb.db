@@ -1,53 +1,69 @@
-// Switch to the bibliotheque database (creates it if it doesn't exist)
-use bibliotheque
+1-- Books Collection
 
-// Create Books Collection
+    {
+      "_id": ObjectId,
+      "title": String,
+      "author_ids": [ObjectId],  // References to authors in Neo4j
+      "isbn": String,
+      "publication_date": Date,
+      "copies_available": Number
+    }
+
+2-- Members Collection 
+
+    {
+      "_id": ObjectId,
+      "name": String,
+      "email": String,
+      "address": String,
+      "phone_number": String,
+      "membership_date": Date
+    }
+
+3-- Loans Collection
+
+    {
+      "_id": ObjectId,
+      "book_id": ObjectId,  // References to books in MongoDB
+      "member_id": ObjectId,  // References to members in MongoDB
+      "loan_date": Date,
+      "return_date": Date,
+      "status": String  // "on_loan", "returned"
+    }
+
+
+-----------mongosh script --------------
+
+
+// library_setup.js
+use library
+
+// Create collections
 db.createCollection("books")
-db.books.insertMany([
-    {
-        "isbn": "978-3-16-148410-0",
-        "title": "The Great Gatsby",
-        "author_id": ObjectId("60c72b2f5f1b2c001c8e4b75"),
-        "published_date": new Date("1925-04-10T00:00:00Z"),
-        "genre": "Fiction",
-        "copies_available": 5
-    }
-])
-
-// Create Members Collection
 db.createCollection("members")
-db.members.insertMany([
-    {
-        "member_id": "M12345",
-        "name": "John Doe",
-        "email": "john.doe@example.com",
-        "phone": "555-1234",
-        "address": "123 Main St, Anytown, USA",
-        "membership_date": new Date("2021-01-15T00:00:00Z")
-    }
-])
-
-// Create Loans Collection
 db.createCollection("loans")
-db.loans.insertMany([
-    {
-        "loan_id": "L98765",
-        "book_id": ObjectId("60c72b2f5f1b2c001c8e4b76"),
-        "member_id": ObjectId("60c72b2f5f1b2c001c8e4b77"),
-        "loan_date": new Date("2021-05-01T00:00:00Z"),
-        "due_date": new Date("2021-06-01T00:00:00Z"),
-        "return_date": null
-    }
-])
 
-// Create Users Collection
-db.createCollection("users")
-db.users.insertMany([
-    {
-        "user_id": "U23456",
-        "username": "admin",
-        "password_hash": "$2b$12$eImiTXuWVxfM37uY4JANjQ==",  // Hashed password
-        "email": "admin@example.com",
-        "role": "admin"
-    }
-])
+// Insert sample documents
+db.books.insertOne({
+   "title": "Example Book",
+   "author_ids": [ObjectId("60d5f2d8a3e2c15b5e1b4f1c"), ObjectId("60d5f2d8a3e2c15b5e1b4f1d")],
+   "isbn": "1234567890",
+   "publication_date": new Date("2024-01-01"),
+   "copies_available": 5
+})
+
+db.members.insertOne({
+   "name": "John Doe",
+   "email": "john.doe@example.com",
+   "address": "123 Main St",
+   "phone_number": "123-456-7890",
+   "membership_date": new Date("2024-01-01")
+})
+
+db.loans.insertOne({
+   "book_id": ObjectId("60d5f2d8a3e2c15b5e1b4f1e"),  // Replace with actual book ObjectId
+   "member_id": ObjectId("60d5f2d8a3e2c15b5e1b4f1f"),  // Replace with actual member ObjectId
+   "loan_date": new Date("2024-05-01"),
+   "return_date": new Date("2024-05-15"),
+   "status": "on_loan"
+})

@@ -1,9 +1,14 @@
 // Create Author nodes
-CREATE (:Author {name: 'Author Name 1'})
-CREATE (:Author {name: 'Author Name 2'})
-CREATE (:Author {name: 'Author Name 3'})
+CREATE (a1:Author {name: 'Author Name 1'})
+CREATE (a2:Author {name: 'Author Name 2'})
+CREATE (a3:Author {name: 'Author Name 3'})
 
-// Create Book nodes and connect them to authors
-CREATE (:Book {title: 'Book Title 1', isbn: 'ISBN Number 1'})-[:WROTE]->(:Author {name: 'Author Name 1'})
-CREATE (:Book {title: 'Book Title 2', isbn: 'ISBN Number 2'})-[:WROTE]->(:Author {name: 'Author Name 2'})
-CREATE (:Book {title: 'Book Title 3', isbn: 'ISBN Number 3'})-[:WROTE]->(:Author {name: 'Author Name 3'})
+// Create Book nodes
+CREATE (b1:Book {title: 'Book Title 1', isbn: 'ISBN Number 1'})
+CREATE (b2:Book {title: 'Book Title 2', isbn: 'ISBN Number 2'})
+CREATE (b3:Book {title: 'Book Title 3', isbn: 'ISBN Number 3'})
+
+// Create relationships between Book and Author nodes
+CREATE (b1)-[:WROTE]->(a1)
+CREATE (b2)-[:WROTE]->(a2)
+CREATE (b3)-[:WROTE]->(a3)
