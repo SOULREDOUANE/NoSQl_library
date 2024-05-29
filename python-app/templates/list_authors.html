@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Books</title>
+    <title>Authors</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -13,22 +13,20 @@
                 <li><a href="{{ url_for('index') }}">Home</a></li>
                 <li><a href="{{ url_for('books') }}">Books</a></li>
                 <li><a href="{{ url_for('authors') }}">Authors</a></li>
-                <li><a href="#">Articles</a></li>
-                <li><a href="#">Contact Us</a></li>
             </ul>
         </nav>
         <a href="#" class="button">Subscribe Newsletter</a>
     </header>
     <main>
-        <h1>Books</h1>
+        <h1>Authors</h1>
         <div class="actions">
-            <a href="{{ url_for('add_book') }}" class="button">Add Book</a>
+            <a href="{{ url_for('add_author') }}" class="button">Add Author</a>
         </div>
         <ul>
-            {% for book in books %}
-                <li>{{ book['title'] }} by {{ book['author'] }} 
-                    <a href="{{ url_for('update_book', book_id=book['_id']) }}">Update</a>
-                    <a href="{{ url_for('delete_book', book_id=book['_id']) }}">Delete</a>
+            {% for author in authors %}
+                <li class="item">{{ author['name'] }}
+                    <a href="{{ url_for('update_author', author_id=author['_id']) }}">Update</a>
+                    <a href="{{ url_for('delete_author', author_id=author['_id']) }}">Delete</a>
                 </li>
             {% endfor %}
         </ul>

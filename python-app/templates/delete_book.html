@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Books</title>
+    <title>Delete Book</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -20,18 +20,7 @@
         <a href="#" class="button">Subscribe Newsletter</a>
     </header>
     <main>
-        <h1>Books</h1>
-        <div class="actions">
-            <a href="{{ url_for('add_book') }}" class="button">Add Book</a>
-        </div>
-        <ul>
-            {% for book in books %}
-                <li>{{ book['title'] }} by {{ book['author'] }} 
-                    <a href="{{ url_for('update_book', book_id=book['_id']) }}">Update</a>
-                    <a href="{{ url_for('delete_book', book_id=book['_id']) }}">Delete</a>
-                </li>
-            {% endfor %}
-        </ul>
-    </main>
-</body>
-</html>
+        <h1>Delete Book</h1>
+        <form action="{{ url_for('delete_book', book_id=book['_id']) }}" method="POST">
+            <p>Are you sure you want to delete the book "{{ book['title'] }}" by {{ book['author'] }}?</p>
+            <button type

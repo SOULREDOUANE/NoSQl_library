@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Authors</title>
+    <title>Delete Author</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -13,19 +13,16 @@
                 <li><a href="{{ url_for('index') }}">Home</a></li>
                 <li><a href="{{ url_for('books') }}">Books</a></li>
                 <li><a href="{{ url_for('authors') }}">Authors</a></li>
-                <li><a href="#">Articles</a></li>
-                <li><a href="#">Contact Us</a></li>
             </ul>
         </nav>
         <a href="#" class="button">Subscribe Newsletter</a>
     </header>
     <main>
-        <h1>Authors</h1>
-        <ul>
-            {% for author, book in authors_books %}
-                <li>{{ author }} wrote {{ book }}</li>
-            {% endfor %}
-        </ul>
+        <h1>Delete Author</h1>
+        <form action="{{ url_for('delete_author', author_id=author['_id']) }}" method="POST">
+            <p>Are you sure you want to delete the author "{{ author['name'] }}"?</p>
+            <button type="submit">Delete Author</button>
+        </form>
     </main>
 </body>
 </html>

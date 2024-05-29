@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Authors</title>
+    <title>Add Author</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -13,19 +13,19 @@
                 <li><a href="{{ url_for('index') }}">Home</a></li>
                 <li><a href="{{ url_for('books') }}">Books</a></li>
                 <li><a href="{{ url_for('authors') }}">Authors</a></li>
-                <li><a href="#">Articles</a></li>
-                <li><a href="#">Contact Us</a></li>
             </ul>
         </nav>
         <a href="#" class="button">Subscribe Newsletter</a>
     </header>
     <main>
-        <h1>Authors</h1>
-        <ul>
-            {% for author, book in authors_books %}
-                <li>{{ author }} wrote {{ book }}</li>
-            {% endfor %}
-        </ul>
+        <h1>Add Author</h1>
+        <form action="{{ url_for('add_author') }}" method="POST">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required><br>
+            <label for="bio">Bio:</label>
+            <textarea id="bio" name="bio" required></textarea><br>
+            <button type="submit">Add Author</button>
+        </form>
     </main>
 </body>
 </html>

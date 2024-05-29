@@ -6,12 +6,25 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Library Management System</h1>
-    <nav>
-        <ul>
-            <li><a href="{{ url_for('books') }}">Books</a></li>
-            <li><a href="{{ url_for('authors') }}">Authors</a></li>
-        </ul>
-    </nav>
+    <header>
+        <div class="logo">Library</div>
+        <nav>
+            <ul>
+                <li class="item" ><a href="{{ url_for('books') }}">Books</a></li>
+                <li class="item" ><a href="{{ url_for('authors') }}">Authors</a></li>
+                <li class="item" ><a href="#">Articles</a></li>
+                <li class="item" ><a href="#">Contact Us</a></li>
+            </ul>
+        </nav>
+        <a href="#" class="button">Subscribe Newsletter</a>
+    </header>
+    <main>
+        <h1>Welcome to the Library Management System</h1>
+        <div class="actions">
+            <a href="{{ url_for('add_book') }}" class="button">Add Book</a>
+            <a href="{{ url_for('books') }}" class="button">View Books</a>
+            <a href="{{ url_for('authors') }}" class="button">View Authors</a>
+        </div>
+    </main>
 </body>
 </html>

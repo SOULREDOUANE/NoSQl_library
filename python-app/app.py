@@ -35,23 +35,48 @@ def authors():
     authors_books = [(record['a']['name'], record['b']['title']) for record in result]
     return render_template('authors.html', authors_books=authors_books)
 
-@app.route('/add_book', methods=['POST'])
+@app.route('/add_book', methods=['GET', 'POST'])
 def add_book():
-    title = request.form['title']
-    author = request.form['author']
-    isbn = request.form['isbn']
-    publication_date = request.form['publication_date']
-    copies_available = request.form['copies_available']
-    
-    book = Book(title, author, isbn, publication_date, copies_available)
-    mongodb_service.db['books'].insert_one(book.to_dict())
-    
-    neo4j_service.driver.session().run(
-        "MERGE (b:Book {title: $title}) MERGE (a:Author {name: $author}) MERGE (a)-[:WROTE]->(b)",
-        title=title, author=author
-    )
-    
-    return redirect(url_for('books'))
+    if request.method == 'POST':
+        title = request.form['title']
+        author = request.form['author']
+        isbn = request.form['isbn']
+        publication_date = request.form['publication_date']
+        copies_available = request.form['copies_available']
+        
+        book = Book(title, author, isbn, publication_date, copies_available)
+        mongodb_service.db['books'].insert_one(book.to_dict())
+        
+        neo4j_service.driver.session().run(
+            "MERGE (b:Book {title: $title}) MERGE (a:Author {name: $author}) MERGE (a)-[:WROTE]->(b)",
+            title=title, author=author
+        )
+        
+        return redirect(url_for('books'))
+    return render_template('add_book.html')
+
+@app.route('/update_book/<book_id>', methods=['GET', 'POST'])
+def update_book(book_id):
+    book = mongodb_service.db['books'].find_one({"_id": book_id})
+    if request.method == 'POST':
+        updated_data = {
+            "title": request.form['title'],
+            "author": request.form['author'],
+            "isbn": request.form['isbn'],
+            "publication_date": request.form['publication_date'],
+            "copies_available": request.form['copies_available']
+        }
+        mongodb_service.db['books'].update_one({"_id": book_id}, {"$set": updated_data})
+        return redirect(url_for('books'))
+    return render_template('update_book.html', book=book)
+
+@app.route('/delete_book/<book_id>', methods=['GET', 'POST'])
+def delete_book(book_id):
+    if request.method == 'POST':
+        mongodb_service.db['books'].delete_one({"_id": book_id})
+        return redirect(url_for('books'))
+    book = mongodb_service.db['books'].find_one({"_id": book_id})
+    return render_template('delete_book.html', book=book)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
