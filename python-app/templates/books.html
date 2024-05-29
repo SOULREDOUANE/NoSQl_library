@@ -21,14 +21,16 @@
     </header>
     <main>
         <h1>Books</h1>
-        <div class="actions">
-            <a href="{{ url_for('add_book') }}" class="button">Add Book</a>
-        </div>
         <ul>
             {% for book in books %}
-                <li>{{ book['title'] }} by {{ book['author'] }} 
-                    <a href="{{ url_for('update_book', book_id=book['_id']) }}">Update</a>
-                    <a href="{{ url_for('delete_book', book_id=book['_id']) }}">Delete</a>
+                <li>
+                    {{ book['title'] }} by {{ book['author'] }}
+                    <div class="btn-container">
+                        <button  class="btn btn-update del" onclick="location.href='{{ url_for('update_book', book_id=book['_id']) }}'">Update</button>
+                        <form action="{{ url_for('delete_book', book_id=book['_id']) }}" method="post" style="display:inline;">
+                            <button class="btn btn-delete">Delete</button>
+                        </form>
+                    </div>
                 </li>
             {% endfor %}
         </ul>
