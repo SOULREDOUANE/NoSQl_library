@@ -6,25 +6,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <header>
-        <div class="logo">Library</div>
-        <nav>
-            <ul>
-                <li><a href="{{ url_for('index') }}">Home</a></li>
-                <li><a href="{{ url_for('books') }}">Books</a></li>
-                <li><a href="{{ url_for('authors') }}">Authors</a></li>
-            </ul>
-        </nav>
-        <a href="#" class="button">Subscribe Newsletter</a>
-    </header>
     <main>
         <h1>Update Author</h1>
-        <form action="{{ url_for('update_author', author_id=author['_id']) }}" method="POST">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" value="{{ author['name'] }}" required><br>
-            <label for="bio">Bio:</label>
-            <textarea id="bio" name="bio" required>{{ author['bio'] }}</textarea><br>
-            <button type="submit">Update Author</button>
+        <form action="{{ url_for('update_author', author_name=author_name) }}" method="post">
+            <label for="new_name">New Name:</label>
+            <input type="text" id="new_name" name="new_name" required>
+            <button type="submit" class="btn btn-update">Update</button>
         </form>
     </main>
 </body>

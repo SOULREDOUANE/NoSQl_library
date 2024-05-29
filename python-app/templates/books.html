@@ -24,9 +24,12 @@
         <ul>
             {% for book in books %}
                 <li>
-                    {{ book['title'] }} by {{ book['author'] }}
+                    <strong>Title:</strong> {{ book['title'] }}<br>
+                    <strong>ISBN:</strong> {{ book['isbn'] }}<br>
+                    <strong>Publication Date:</strong> {{ book['publication_date'] }}<br>
+                    <strong>Copies Available:</strong> {{ book['copies_available'] }}<br>
                     <div class="btn-container">
-                        <button  class="btn btn-update del" onclick="location.href='{{ url_for('update_book', book_id=book['_id']) }}'">Update</button>
+                        <button class="btn btn-update" onclick="location.href='{{ url_for('update_book', book_id=book['_id']) }}'">Update</button>
                         <form action="{{ url_for('delete_book', book_id=book['_id']) }}" method="post" style="display:inline;">
                             <button class="btn btn-delete">Delete</button>
                         </form>
