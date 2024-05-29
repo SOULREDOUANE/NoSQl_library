@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from models.book import Book
 from services.mongodb_service import MongoDBService
 from services.neo4j_service import Neo4jService
+from bson.objectid import ObjectId # added
 import os
 
 app = Flask(__name__)
@@ -34,6 +35,32 @@ def authors():
     result = neo4j_service.driver.session().run(query)
     authors_books = [(record['a']['name'], record['b']['title']) for record in result]
     return render_template('authors.html', authors_books=authors_books)
+
+
+@app.route('/update_author/<author_name>', methods=['GET', 'POST'])
+def update_author(author_name):
+    if request.method == 'POST':
+        new_name = request.form['new_name']
+        query = """
+        MATCH (a:Author {name: $author_name}) 
+        SET a.name = $new_name
+        """
+        neo4j_service.driver.session().run(query, author_name=author_name, new_name=new_name)
+        return redirect(url_for('authors'))
+    
+    return render_template('update_author.html', author_name=author_name)
+
+# Route pour supprimer un auteur
+@app.route('/delete_author/<author_name>', methods=['POST'])
+def delete_author(author_name):
+    query = """
+    MATCH (a:Author {name: $author_name})-[r:WROTE]->(b:Book) 
+    DELETE r, a
+    """
+    neo4j_service.driver.session().run(query, author_name=author_name)
+    return redirect(url_for('authors'))
+
+
 
 @app.route('/add_book', methods=['GET', 'POST'])
 def add_book():

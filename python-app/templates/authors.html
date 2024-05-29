@@ -23,7 +23,17 @@
         <h1>Authors</h1>
         <ul>
             {% for author, book in authors_books %}
-                <li>{{ author }} wrote {{ book }}</li>
+                <li>
+                    {{ author }} wrote {{ book }}
+                    <div class="btn-container">
+                        <form action="{{ url_for('update_author', author_name=author) }}" method="get" style="display:inline;">
+                            <button class="btn btn-update">Update</button>
+                        </form>
+                        <form action="{{ url_for('delete_author', author_name=author) }}" method="post" style="display:inline;">
+                            <button class="btn btn-delete">Delete</button>
+                        </form>
+                    </div>
+                </li>
             {% endfor %}
         </ul>
     </main>
