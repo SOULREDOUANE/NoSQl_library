@@ -4,7 +4,7 @@ from services.mongodb_service import MongoDBService
 from services.neo4j_service import Neo4jService
 from bson.objectid import ObjectId
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 
@@ -21,6 +21,7 @@ neo4j_password = os.getenv('NEO4J_PASSWORD')
 neo4j_service = Neo4jService(neo4j_uri, neo4j_user, neo4j_password)
 neo4j_service.connect()
 
+# Insert sample books
 def insert_sample_books():
     books_collection = mongodb_service.db['books']
     books_collection.drop()  # Drop the existing collection to start fresh
@@ -59,7 +60,6 @@ def insert_sample_books():
         }
     ]
     books_collection.insert_many(sample_books)
-
 
 insert_sample_books()
 
@@ -141,6 +141,46 @@ def delete_author(author_name):
     """
     neo4j_service.driver.session().run(query, author_name=author_name)
     return redirect(url_for('authors'))
+@app.route('/loan_book/<book_id>', methods=['POST'])
+def loan_book(book_id):
+    book = mongodb_service.db['books'].find_one({"_id": ObjectId(book_id)})
 
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    if book and book['copies_available'] > 0:
+        # Decrease the number of available copies
+        mongodb_service.db['books'].update_one(
+            {"_id": ObjectId(book_id)},
+            {"$inc": {"copies_available": -1}}
+        )
+        # Add a new loan entry
+        loan_date = datetime.now()
+        return_date = loan_date + timedelta(days=7)
+        loan = {
+            "book_id": ObjectId(book_id),
+            "borrower_id": "12345",  # Replace this with the actual borrower ID
+            "loan_date": loan_date,
+            "return_date": return_date,
+            "status": "loaned"
+        }
+        mongodb_service.db['loans'].insert_one(loan)
+    return redirect(url_for('books'))
+
+@app.route('/loans')
+def loans():
+    loans = list(mongodb_service.db['loans'].aggregate([
+        {
+            "$lookup": {
+                "from": "books",
+                "localField": "book_id",
+                "foreignField": "_id",
+                "as": "book"
+            }
+        },
+        {
+            "$unwind": "$book"
+        }
+    ]))
+    return render_template('loans.html', loaned_books=loans)
+
+if __name__ == '__main__':
+    app.run(debug=True)
+

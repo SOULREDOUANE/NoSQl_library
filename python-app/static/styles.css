@@ -1,0 +1,71 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #fff;
+    background-image: url('python-app/static/pic_lib.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+nav {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px 0;
+    display: flex;
+    justify-content: center; /* Center the nav items horizontally */
+}
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    color: #ff5733;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center; /* Center the list items horizontally */
+}
+
+nav ul li {
+    margin: 0 10px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+
+ul li {
+    
+    color: black;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    
+}
+
+ul li strong {
+    color: #333;
+    
+}
+
+.button {
+    background-color: #ff5733;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.button:hover {
+    background-color: #c70039;
+}

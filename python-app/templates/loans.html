@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loaned Books</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li class="item"><a href="{{ url_for('index') }}">Home</a></li>
+            <li class="item"><a href="{{ url_for('books') }}">Books</a></li>
+            <li class="item"><a href="{{ url_for('authors') }}">Authors</a></li>
+            <li class="item"><a href="{{ url_for('loans') }}">Prets</a></li>
+            <li class="item"><a href="#">Contact Us</a></li>
+        </ul>
+    </nav>
+    <h1>Loaned Books</h1>
+    <ul>
+        {% for loan in loaned_books %}
+            <li>
+                <strong>Title:</strong> {{ loan.book.title }}<br>
+                <strong>ISBN:</strong> {{ loan.book.isbn }}<br>
+                <strong>Borrower ID:</strong> {{ loan.borrower_id }}<br>
+                <strong>Loan Date:</strong> {{ loan.loan_date.strftime('%Y-%m-%d %H:%M:%S') }}<br>
+                <strong>Return Date:</strong> {{ loan.return_date.strftime('%Y-%m-%d %H:%M:%S') }}<br>
+                <strong>Status:</strong> {{ loan.status }}<br>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
