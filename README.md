@@ -54,9 +54,10 @@
 
 ## Contributors:
 
-- John Doe (Project Manager)
-- Jane Smith (Lead Developer)
-- Alex Johnson (Database Specialist)
+- SOUL Redouane (Project Manager)
+- JBABRI Saloua  (Lead Developer)
+- ALLAM Omayma(Database Specialist)
+- HETTAF Houria (Database Specialist)
 
 ## License:
 
