@@ -1,40 +1,48 @@
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
-    padding: 0;
-    background-color: #f0f0f0;
-    color: #333;
+    font-family: Arial, sans-serif;
+    color: #fff;
+    background-image: url('pic_lib.jpg'); /* Path to your background image */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    background-size: cover; /* Scale the background image to be as large as possible so that the background area is completely covered by the background image */
 }
 
+
 header {
-    background-color: #4CAF50;
-    color: white;
-    padding: 20px 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+main {
+    padding: 40px 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-header .logo {
+.logo {
     font-size: 24px;
     font-weight: bold;
 }
 
 nav ul {
     list-style: none;
-    margin: 0;
     padding: 0;
+    margin: 0;
     display: flex;
 }
 
 nav ul li {
-    margin: 0 15px;
+    margin: 0 10px;
 }
 
 nav ul li a {
-    color: white;
+    color: #fff;
     text-decoration: none;
-    font-weight: bold;
+    font-size: 18px;
 }
 
 nav ul li a:hover {
@@ -42,27 +50,39 @@ nav ul li a:hover {
 }
 
 .button {
+    background-color: #ff5733;
+    color: #fff;
     padding: 10px 20px;
-    background-color: #333;
-    color: white;
     text-decoration: none;
     border-radius: 5px;
-    transition: background-color 0.3s;
+    font-size: 16px;
 }
 
 .button:hover {
-    background-color: #555;
+    background-color: #c70039;
 }
 
 main {
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+    padding: 40px 20px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5); /* optional, to make text more readable */
 }
+
+.actions {
+    margin-top: 20px;
+}
+
+.actions .button {
+    margin: 0 10px;
+}
+
+
 
 h1 {
     text-align: center;
     margin-bottom: 20px;
+    color:#ff5733 ;
+    margin-bottom: 20%;
 }
 
 .book-list {

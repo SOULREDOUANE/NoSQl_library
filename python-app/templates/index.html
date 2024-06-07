@@ -3,22 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Library Management System</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="style.css"> <!-- Adjust the path according to your setup -->
 </head>
+
 <body>
     <header>
         <div class="logo">Library</div>
         <nav>
             <ul>
-                <li class="item" ><a href="{{ url_for('books') }}">Books</a></li>
-                <li class="item" ><a href="{{ url_for('authors') }}">Authors</a></li>
-                <li class="item" ><a href="#">Articles</a></li>
-                <li class="item" ><a href="#">Contact Us</a></li>
+                <li class="item"><a href="{{ url_for('books') }}">Books</a></li>
+                <li class="item"><a href="{{ url_for('authors') }}">Authors</a></li>
+                <li class="item"><a href="#">Articles</a></li>
+                <li class="item"><a href="#">Contact Us</a></li>
             </ul>
         </nav>
         <a href="#" class="button">Subscribe Newsletter</a>
     </header>
     <main>
+        <img src="python-app\static\pic_lib.jpg" alt="Background Image" style="width: 100%; height: 100vh; object-fit: cover;">
+       
         <h1>Welcome to the Library Management System</h1>
         <div class="actions">
             <a href="{{ url_for('add_book') }}" class="button">Add Book</a>
