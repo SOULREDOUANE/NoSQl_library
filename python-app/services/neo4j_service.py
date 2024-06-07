@@ -8,8 +8,8 @@ class Neo4jService:
         self.driver = None
 
     def connect(self):
+        print(f"Connecting to Neo4j with URI: {self.uri}, User: {self.user}")
         self.driver = GraphDatabase.driver(self.uri, auth=(self.user, self.password))
-        print("Neo4j connection successful")
 
     def create_initial_data(self, books):
         with self.driver.session() as session:
