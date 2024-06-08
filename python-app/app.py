@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, logging, render_template, request, redirect, url_for
 from models.book import Book
 from services.mongodb_service import MongoDBService
 from services.neo4j_service import Neo4jService
@@ -140,9 +140,25 @@ def delete_author(author_name):
     DELETE r, a
     """
     neo4j_service.driver.session().run(query, author_name=author_name)
+
     return redirect(url_for('authors'))
-@app.route('/loan_book/<book_id>', methods=['POST'])
-def loan_book(book_id):
+
+@app.route('/borrowers')
+def borrowers():
+    loans = list(mongodb_service.db['loans'].find())
+    borrowers = []
+    for loan in loans:
+        if 'borrower_name' in loan:
+            borrowers.append({'borrower_name': loan['borrower_name']})
+    return render_template('borrowers.html', loans=borrowers)
+
+
+
+
+@app.route('/loan_book', methods=['POST'])
+def loan_book():
+    book_id = request.form['book_id']
+    borrower_name = request.form['borrower_name']
     book = mongodb_service.db['books'].find_one({"_id": ObjectId(book_id)})
 
     if book and book['copies_available'] > 0:
@@ -156,13 +172,19 @@ def loan_book(book_id):
         return_date = loan_date + timedelta(days=7)
         loan = {
             "book_id": ObjectId(book_id),
-            "borrower_id": "12345",  # Replace this with the actual borrower ID
+            "title": book['title'],
+            "isbn": book['isbn'],
+            "borrower_name": borrower_name,
             "loan_date": loan_date,
             "return_date": return_date,
             "status": "loaned"
         }
         mongodb_service.db['loans'].insert_one(loan)
-    return redirect(url_for('books'))
+        # Redirect to the loans page
+        return redirect(url_for('loans'))
+    else:
+        # Handle error or display message
+        return "Error: Book not available for loan", 400
 
 @app.route('/loans')
 def loans():
@@ -179,7 +201,13 @@ def loans():
             "$unwind": "$book"
         }
     ]))
+    loans = list(mongodb_service.db['loans'].find())
+    #loans+= render_template('loans.html', loaned_books=loaned_books)
+    
     return render_template('loans.html', loaned_books=loans)
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

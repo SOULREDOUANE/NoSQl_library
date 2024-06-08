@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loaned Books</title>
+    <title>Borrowers</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
@@ -16,17 +16,10 @@
             <li class="item"><a href="{{ url_for('borrowers') }}">Adherents</a></li>
         </ul>
     </nav>
-    <h1>Loaned Books</h1>
+    <h1>Borrowers</h1>
     <ul>
-        {% for loan in loaned_books %}
-            <li>
-                <strong>Title:</strong> {{ loan.title }}<br>
-                <strong>ISBN:</strong> {{ loan.isbn }}<br>
-                <strong>Borrower:</strong> {{ loan.borrower_name }}<br>
-                <strong>Loan Date:</strong> {{ loan.loan_date }}<br>
-                <strong>Return Date:</strong> {{ loan.return_date }}<br>
-                <strong>Status:</strong> {{ loan.status }}<br>
-            </li>
+        {% for loan in loans %}
+            <li><strong>Borrower:</strong> {{ loan.borrower_name }}</li>
         {% endfor %}
     </ul>
 </body>

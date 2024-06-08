@@ -4,6 +4,40 @@
     <meta charset="UTF-8">
     <title>Books</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style_book.css') }}">
+    <style>
+        /* Style for the modal */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.4); 
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; 
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; 
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -34,15 +68,43 @@
                         <form action="{{ url_for('delete_book', book_id=book['_id']) }}" method="post" style="display:inline;">
                             <button class="btn btn-delete">Delete</button>
                         </form>
-                        <form action="{{ url_for('loan_book', book_id=book['_id']) }}" method="post" style="display:inline;">
-                            <button class="btn btn-loan">Loan</button>
-                        </form>
+                        <button class="btn btn-loan" onclick="openLoanModal('{{ book['_id'] }}')">Loan</button>
                     </div>
                 </li>
             {% endfor %}
         </ul>
         
-        
+        <!-- Modal for Loaning a Book -->
+        <div id="loanModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeLoanModal()">&times;</span>
+                <form id="loanForm" method="post" action="{{ url_for('loan_book') }}">
+                    <input type="hidden" name="book_id" id="modalBookId">
+                    <label for="borrower_name">Borrower Name:</label>
+                    <input type="text" id="borrower_name" name="borrower_name" required>
+                    <button type="submit">Loan Book</button>
+                </form>
+            </div>
+        </div>
     </main>
+    <script>
+        // JavaScript to handle the modal
+        function openLoanModal(bookId) {
+            document.getElementById("modalBookId").value = bookId;
+            document.getElementById("loanModal").style.display = "block";
+        }
+
+        function closeLoanModal() {
+            document.getElementById("loanModal").style.display = "none";
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            var modal = document.getElementById("loanModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>
