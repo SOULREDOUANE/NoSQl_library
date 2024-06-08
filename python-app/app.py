@@ -146,11 +146,12 @@ def delete_author(author_name):
 @app.route('/borrowers')
 def borrowers():
     loans = list(mongodb_service.db['loans'].find())
-    borrowers = []
+    borrower_names = set()  # Use a set to store unique borrower names
     for loan in loans:
         if 'borrower_name' in loan:
-            borrowers.append({'borrower_name': loan['borrower_name']})
-    return render_template('borrowers.html', loans=borrowers)
+            borrower_names.add(loan['borrower_name'])
+    return render_template('borrowers.html', borrowers=list(borrower_names))  # Convert the set back to a list for rendering
+
 
 
 

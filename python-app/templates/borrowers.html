@@ -18,8 +18,8 @@
     </nav>
     <h1>Borrowers</h1>
     <ul>
-        {% for loan in loans %}
-            <li><strong>Borrower:</strong> {{ loan.borrower_name }}</li>
+        {% for borrower in borrowers %}
+            <li><strong>Borrower:</strong> {{ borrower }}</li>
         {% endfor %}
     </ul>
 </body>
