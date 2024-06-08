@@ -91,14 +91,21 @@ def add_book():
         copies_available = request.form['copies_available']
         cover_url = request.form['cover_url']
         
-        book = Book(title, author, isbn, publication_date, copies_available, cover_url)
-        mongodb_service.db['books'].insert_one(book.to_dict())
-        neo4j_service.driver.session().run(
-            "MERGE (b:Book {title: $title}) MERGE (a:Author {name: $author}) MERGE (a)-[:WROTE]->(b)",
-            title=title, author=author
-        )
-        return redirect(url_for('books'))
+        book = {
+            "title": title,
+            "author": author,
+            "isbn": isbn,
+            "publication_date": publication_date,
+            "copies_available": copies_available,
+            "cover_url": cover_url
+        }
+        
+        mongodb_service.db['books'].insert_one(book)
+        
+        return redirect(url_for('books'))  # Redirect to the books page after adding the book
+    
     return render_template('add_book.html')
+
 
 @app.route('/update_book/<book_id>', methods=['GET', 'POST'])
 def update_book(book_id):
@@ -153,6 +160,21 @@ def borrowers():
     return render_template('borrowers.html', borrowers=list(borrower_names))  # Convert the set back to a list for rendering
 
 
+@app.route('/delete_borrower', methods=['POST'])
+def delete_borrower():
+    borrower_name = request.form['borrower_name']
+    loans = list(mongodb_service.db['loans'].find())
+    borrower_deleted = False
+    
+    for loan in loans:
+        if 'borrower_name' in loan and loan['borrower_name'] == borrower_name:
+            mongodb_service.db['loans'].delete_one({"_id": loan["_id"]})
+            borrower_deleted = True
+    
+    if borrower_deleted:
+        return 'Borrower "{}" and associated loans have been deleted.'.format(borrower_name), 200
+    else:
+        return 'Borrower "{}" not found.'.format(borrower_name), 404
 
 
 
