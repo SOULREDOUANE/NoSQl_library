@@ -69,7 +69,9 @@ insert_sample_books()
 def index():
     return redirect(url_for('login'))
     
-
+@app.route('/home')
+def home():
+    return redirect(url_for('index'))
 @app.route('/books')
 def books():
     books = list(mongodb_service.db['books'].find())
