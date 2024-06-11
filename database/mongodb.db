@@ -20,16 +20,15 @@
       "membership_date": Date
     }
 
-3-- Loans Collection
+# Sample document structure for loans
+{
+    "book_id": ObjectId("60d5f2d8a3e2c15b5e1b4f1c"),  # Reference to the book
+    "borrower_id": ObjectId("60d5f2d8a3e2c15b5e1b4f1d"),  # Reference to the borrower
+    "loan_date": datetime(2023, 6, 7),
+    "return_date": datetime(2023, 6, 21),
+    "status": "loaned"  # Status could be "loaned" or "returned"
+}
 
-    {
-      "_id": ObjectId,
-      "book_id": ObjectId,  // References to books in MongoDB
-      "member_id": ObjectId,  // References to members in MongoDB
-      "loan_date": Date,
-      "return_date": Date,
-      "status": String  // "on_loan", "returned"
-    }
 
 
 -----------mongosh script --------------

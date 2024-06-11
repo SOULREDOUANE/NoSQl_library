@@ -7,6 +7,8 @@ import os
 from datetime import datetime, timedelta
 
 app = Flask(__name__)
+# Liste pour stocker les utilisateurs enregistrés
+registered_users = {}
 
 # MongoDB setup
 mongo_uri = os.getenv('MONGO_URI')
@@ -65,7 +67,8 @@ insert_sample_books()
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return redirect(url_for('login'))
+    
 
 @app.route('/books')
 def books():
@@ -229,9 +232,42 @@ def loans():
     
     return render_template('loans.html', loaned_books=loans)
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        # Vérifiez si l'utilisateur est enregistré et que le mot de passe correspond
+        if username in registered_users and registered_users[username] == password:
+             return render_template('index.html')
+        else:
+            # Mauvais nom d'utilisateur ou mot de passe, afficher un message d'erreur
+            error = 'Invalid username or password. Please try again.'
+            return render_template('login.html', error=error)
+    
+    # Si la méthode de requête est GET ou si l'authentification échoue, afficher la page de connexion
+    return render_template('login.html')
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        # Vérifiez si l'utilisateur est déjà enregistré
+        if username in registered_users:
+            error = 'Username already exists. Please choose a different username.'
+            return render_template('register.html', error=error)
+        
+        # Enregistrez le nouvel utilisateur
+        registered_users[username] = password
+        return redirect(url_for('login'))
+    
+    return render_template('register.html')
 
 
 
 if __name__ == '__main__':
     app.run(debug=True)
-
